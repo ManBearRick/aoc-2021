@@ -33,3 +33,6 @@ print('power consumption = ', gamma_int * epsilon_int)
 
 
 
+
+
+
