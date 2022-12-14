@@ -8,15 +8,22 @@ from pathlib import Path
 
 ENV_FILEPATH = '.env'
 
-# def get_list_data(module_path: str) -> list:
-#     """Read lines of the input file that corresponds to the module name."""
-#     with open(get_data_path(module_path), "r") as fd:
-#         return [s.strip() for s in fd.readlines()]
+def get_dir_path(file: str):
+    return os.path.dirname(os.path.realpath(file))
 
-# def get_data_path(module_path: str) -> str:
-#     """Input file path from `data/` that corresponds to the module name."""
-#     p = Path(module_path)
-#     return p.parent / "input.txt"
+def get_list_data(module_path: str) -> list:
+    """Read lines of the input file that corresponds to the module name."""
+    with open(get_data_path(module_path), "r") as f:
+        return [s.strip() for s in f.readlines()]
+
+def get_input_string(module_path: str) -> str:
+    with open(get_data_path(module_path), "r") as f:
+        return f.read()
+
+def get_data_path(module_path: str) -> str:
+    """Input file path from `data/` that corresponds to the module name."""
+    p = Path(module_path)
+    return p.parent / "input.txt"
 
 def _get_cookie_value() -> str:
     with open(ENV_FILEPATH) as f:
@@ -29,6 +36,7 @@ def get_input(year: int, day: int) -> str:
               cookies = _get_cookie_value(),
               headers = {'User-Agent' : 'ricko rick.d.ortega@gmail.com'})
     return results.content
+
 
 def create_day_help():
     USAGE = """

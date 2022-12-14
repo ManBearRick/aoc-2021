@@ -1,7 +1,6 @@
-import aoc_tools 
+from aoc_tools import get_input_string
 
-with open('input.txt') as f:
-    input = f.read()
+input = get_input_string(__file__)
 
 data = [[d.split()[0], int(d.split()[1])] for d in input.splitlines()]
 
