@@ -7,6 +7,15 @@ import io
 from pathlib import Path
 
 ENV_FILEPATH = '.env'
+DEFAULT_TEMPLATE_CODE = '''
+import os
+
+_heredir = os.path.dirname(os.path.realpath(__file__))
+filename = os.path.join(_heredir, 'input.txt')
+
+with open(filename, 'r') as f:
+    input_str = f.read()
+'''
 
 def get_dir_path(file: str):
     return os.path.dirname(os.path.realpath(file))
@@ -44,7 +53,13 @@ def create_day_help():
     solve. A .env file must exist in the main project directory containing the
     cookie found from a logged in web session for AoC. The .env file should look
     like this (only the cookie value):
-    <cookie_value>
+    <cookie_value>\n\n
+    To create a day use the following flags to create a directory structure and
+    input data for a particular puzzle:
+    --day: The day of the puzzle as a number (i.e. 5)
+    --year: The 4-digit year of the puzzle (i.e. 2021)\n\n
+    An to retrieve the puzzle for day 1 of 2021, your command would look like this:\n
+    aoc-create-day --day 1 --year 2021
     """
 
     print(USAGE)
@@ -67,10 +82,13 @@ def create_day():
     if not os.path.exists(day_file_str):
         os.mkdir(day_file_str)
 
-    with open(f'{day_file_str}/{day_file_str}_p1.py', 'w') as f:
-        f.write(f'#Advent of Code {year} day {day}')
-    with open(f'{day_file_str}/{day_file_str}_p2.py', 'w') as f:
-        f.write(f'#Advent of Code {year} day {day}')
+    template_text = f'''#Advent of Code {year} day {day}{DEFAULT_TEMPLATE_CODE}
+    '''
+
+    with open(f'{day_file_str}/p1.py', 'w') as f:
+        f.write(template_text)
+    with open(f'{day_file_str}/p2.py', 'w') as f:
+        f.write(template_text)
 
     day_int = int(args.day)
     year_int = int(args.year)
