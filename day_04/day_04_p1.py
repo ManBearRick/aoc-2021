@@ -1,6 +1,7 @@
 #Advent of Code 2021 day 4
 from __future__ import annotations
 import os
+from typing import Tuple
 
 _heredir = os.path.dirname(os.path.realpath(__file__))
 filename = os.path.join(_heredir, 'input.txt')
@@ -51,10 +52,6 @@ class Board():
         self.left.discard(number)
         self.check_rows()
         self.check_cols()
-        if self.winner:
-            print(f'\t\t - WINNER - \n\t\tWinning number = {number}')
-            print(f'sum of left = {sum(self.left)}')
-            print(f'sum(self.left) * number = {sum(self.left) * number}')
     
     def check_rows(self) -> bool:
         for i in range(5):
@@ -85,7 +82,11 @@ class Board():
 boards = [Board.parse(board) for board in input]
 ints = [int(s) for s in numbers.split(',')]
 
-def get_first_winning_board(ints: list(str), boards: list(Board)) -> Board:
+def get_winning_number(board: Board, number: int) -> int:
+    return sum(board.left) * number
+
+## PART 1 SOLUTION
+def get_first_winning_board(ints: list(int), boards: list(Board)) -> Tuple[Board, str]:
     for number in ints:
         for board in boards:
             board.discard_number(number)
@@ -93,34 +94,9 @@ def get_first_winning_board(ints: list(str), boards: list(Board)) -> Board:
                 return (board, number)
     raise AssertionError('There really should be a winner')
 
-def get_winning_number(board: Board, number: int) -> int:
-    return sum(board.left) * number
+first_winning_board, winning_number = get_first_winning_board(ints, boards)
+first_number = get_winning_number(first_winning_board, winning_number)
+print(f'Part 1 winning number is {first_number}')
 
-winner_board, winning_number = get_first_winning_board(ints, boards)
-print(str(winner_board))
-winning_number = get_winning_number(winner_board, winning_number)
-print(f'winning number is {winning_number}')
-
-
-# def get_winner_list(ints: list(str), boards: list(Board)) -> list(Board):
-#     winner_list = []    
-#     for board in boards:
-#         for num in ints:
-#             board.discard_number(num)
-#             if board.winner:
-#                 winner_list.append(board)
-#                 break
-#     return winner_list
-
-# def get_last_winner(boards: list(Board)) -> Board:
-#     return boards[-1]
-
-# def calculate_score(board: Board):
-#     for number in ints:
-#         board.discard_number(number)
-#         if board.winner:
-#             return sum(board.left) * number
-
-# winner_list = get_winner_list(ints, boards)
-# last_winner = get_last_winner(winner_list)
-# print(calculate_score(last_winner))
+boards = [Board.parse(board) for board in input]
+ints = [int(s) for s in numbers.split(',')]
